@@ -11,7 +11,7 @@ namespace FolderOpener
 {
     public partial class MainWindow : Window
     {
-        private u[] AppButtons;
+        private AppButton[] AppButtons;
         private Vector MouseClickPos;
         private AppTile[] appTiles;
         private int lastSelectedTile = -1;
