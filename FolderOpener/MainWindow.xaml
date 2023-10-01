@@ -1,0 +1,30 @@
+﻿<Window x:Class="FolderOpener.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FolderOpener"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        Title="MainWindow"
+        Deactivated="OnLostFocus"
+        WindowStartupLocation="CenterScreen"
+        Topmost="True"
+        >
+
+    <Border Name="WindowBorder" CornerRadius="25" MouseMove="OnMouseMove"  PreviewMouseLeftButtonDown="OnMouseDown">
+        <Border.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="_Ordner im File-Explorer öffnen" Click="OpenInExplorer"/>
+            </ContextMenu>
+        </Border.ContextMenu>
+
+        <Grid AllowDrop="True">
+            <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" PreviewMouseWheel="OnScroll">
+                <Grid Name="appGrid"/>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>
