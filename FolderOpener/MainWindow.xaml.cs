@@ -16,7 +16,6 @@ namespace FolderOpener
         private int lastSelectedTile = -1;
         public MainWindow()
         {
-            Constants.Cwd = "K:\\";
             if (Environment.GetCommandLineArgs().Length > 1)
             {
                 string[] SysArgv = Environment.GetCommandLineArgs();

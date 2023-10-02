@@ -25,24 +25,46 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
+using Graphics = System.Drawing.Graphics;
+using SDColor = System.Drawing.Color;
 namespace FolderOpener
 {
     static class Constants
     {
         public static string Cwd = Directory.GetCurrentDirectory(); // current working directory
-        public static string ParentDirectory = Directory.GetParent(Assembly.GetEntryAssembly().Location).FullName;
+        public static string ParentDir= Directory.GetParent(Assembly.GetEntryAssembly().Location).FullName;
+        public static string CachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FastFolder\\cache";
 
-        private static IntPtr _folderIcon = IntPtr.Zero;
-        public static IntPtr FolderIcon
+        private static SDIcon _folderIcon = null;
+        public static SDIcon FolderIcon
         {
             get
             {
-                if (_folderIcon == IntPtr.Zero)
+                if (_folderIcon == null)
                 {
-                    _folderIcon = new Bitmap(Path.Combine(ParentDirectory, "folder.ico")).GetHicon();
+                    _folderIcon = new SDIcon(Path.Combine(ParentDir, "folder.ico"));
                 }
                 return _folderIcon;
+            }
+        }
+        public static ImageSource _emptyImgScr;
+        public static ImageSource EmptyImgScr
+        {
+            get
+            {
+                if (_emptyImgScr == null)
+                {
+                    Bitmap transparentBitmap = new Bitmap(32, 32);
+                    using (Graphics g = Graphics.FromImage(transparentBitmap))
+                    {
+                        g.Clear(SDColor.Transparent);
+                    }
+                    _emptyImgScr = Imaging.CreateBitmapSourceFromHIcon(transparentBitmap.GetHicon(), new Int32Rect(0, 0, 0, 0),
+                    BitmapSizeOptions.FromWidthAndHeight(32, 32));
+                }
+                return _emptyImgScr;
             }
         }
 

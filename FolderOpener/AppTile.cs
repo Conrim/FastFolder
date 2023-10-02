@@ -49,12 +49,15 @@ namespace FolderOpener
             {
                 Orientation = Orientation.Horizontal
             };
+
             Image icon = new Image
             {
+                //Source = Constants.EmptyImgScr,
                 Source = Folder.GetIcon(FileIndex),
                 Height = 32,
                 Width = 32,
             };
+            
             Label label = new Label
             {
                 Content = Path.GetFileNameWithoutExtension(FilePath),
