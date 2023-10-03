@@ -17,7 +17,7 @@
     <Border Name="WindowBorder" CornerRadius="25" MouseMove="OnMouseMove"  PreviewMouseLeftButtonDown="OnMouseDown">
         <Border.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="_Ordner im File-Explorer öffnen" Click="OpenInExplorer"/>
+                <MenuItem Header="Open folder in File Explorer" Click="OpenInExplorer"/>
             </ContextMenu>
         </Border.ContextMenu>
 
