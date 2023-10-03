@@ -164,6 +164,13 @@ namespace FolderOpener
             fileopener.StartInfo.Arguments = Constants.Cwd;
             fileopener.Start();
         }
+        void ReloadAndRestart(object sender, RoutedEventArgs e)
+        {
+            Folder.CreateCache();
+            Folder.LoadFromCache();
+
+            ((App)Application.Current).Restart();
+        }
         void OnScroll(object sender, MouseWheelEventArgs e)
         {
             ScrollViewer scrollviewer = sender as ScrollViewer;

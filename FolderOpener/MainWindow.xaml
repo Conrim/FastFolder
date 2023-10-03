@@ -18,6 +18,7 @@
         <Border.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Open folder in File Explorer" Click="OpenInExplorer"/>
+                <MenuItem Header="Reload and Restart" Click="ReloadAndRestart"/>
             </ContextMenu>
         </Border.ContextMenu>
 

@@ -35,7 +35,7 @@ namespace FolderOpener
             {
                 if (_items == null)
                 {
-                    loadFromCache();
+                    LoadFromCache();
                 }
                 return _items;
             }
@@ -47,7 +47,7 @@ namespace FolderOpener
             {
                 if (_fileData == null)
                 {
-                    loadFromCache();
+                    LoadFromCache();
                 }
                 return _fileData;
             }
@@ -59,7 +59,7 @@ namespace FolderOpener
             {
                 if (_pathPtrs == null)
                 {
-                    loadFromCache();
+                    LoadFromCache();
                 }
                 return _pathPtrs;
             }
@@ -71,7 +71,7 @@ namespace FolderOpener
             {
                 if (_iconPtrs == null)
                 {
-                    loadFromCache();
+                    LoadFromCache();
                 }
                 return _iconPtrs;
             }
@@ -113,26 +113,13 @@ namespace FolderOpener
             }
             writeBinaryFile(data.ToArray(), Constants.CachePath);
         }
-        public static ImageSource GetIcon(int itemIndex)
-        {
-            byte[] imgData = readObjFromFile(_iconPtrs[itemIndex]);
-            using (MemoryStream ms = new MemoryStream(imgData))
-            {
-                return Imaging.CreateBitmapSourceFromHIcon(
-                    new Bitmap(ms).GetHicon(),
-                    new Int32Rect(0, 0, 0, 0),
-                    BitmapSizeOptions.FromWidthAndHeight(32, 32)
-                );
-            }
-        }
-
-        private static void loadFromCache()
+        public static void LoadFromCache()
         {
             if (!File.Exists(Constants.CachePath))
             {
                 CreateCache();
             }
-            
+
             // load data from file
             using (FileStream file = new FileStream(Constants.CachePath, FileMode.Open))
             {
@@ -149,7 +136,18 @@ namespace FolderOpener
                 _items.Add(TEncoding.UTF8.GetString(readObjFromFile(pathPtrs[i])));
             }
         }
-
+        public static ImageSource GetIcon(int itemIndex)
+        {
+            byte[] imgData = readObjFromFile(_iconPtrs[itemIndex]);
+            using (MemoryStream ms = new MemoryStream(imgData))
+            {
+                return Imaging.CreateBitmapSourceFromHIcon(
+                    new Bitmap(ms).GetHicon(),
+                    new Int32Rect(0, 0, 0, 0),
+                    BitmapSizeOptions.FromWidthAndHeight(32, 32)
+                );
+            }
+        }
         private static byte[] extractIcon(uint itemIndex)
         {
             string PathItem = Items[(int)itemIndex];
