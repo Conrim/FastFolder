@@ -22,7 +22,7 @@
             </ContextMenu>
         </Border.ContextMenu>
 
-        <Grid AllowDrop="True">
+        <Grid AllowDrop="False">
             <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" PreviewMouseWheel="OnScroll">
                 <Grid Name="appGrid"/>
             </ScrollViewer>

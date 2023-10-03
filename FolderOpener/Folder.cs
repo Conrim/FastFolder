@@ -81,6 +81,7 @@ namespace FolderOpener
         public static void CreateCache()
         {
             _items = Directory.GetFiles(Constants.Cwd).Concat(Directory.GetDirectories(Constants.Cwd)).ToList();
+            _items.Remove(Constants.CachePath);
             uint itemCount = (uint)_items.Count;
             List<byte> data = new List<byte>();
 

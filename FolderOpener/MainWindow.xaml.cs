@@ -18,6 +18,8 @@ namespace FolderOpener
         {
             if (Environment.GetCommandLineArgs().Length > 1)
             {
+
+
                 string[] SysArgv = Environment.GetCommandLineArgs();
                 for (int i=1; i < SysArgv.Length; i++)
                 {
@@ -38,6 +40,7 @@ namespace FolderOpener
                         {
                             throw new Exception($"Die Datei:'{SysArgv[i]}' existiert nicht");
                         }
+                        Folder.CreateCache();
                     }
                     catch (Exception e)
                     {
@@ -152,6 +155,11 @@ namespace FolderOpener
             DataObject data = new DataObject();
             data.SetFileDropList(selectedFiles);
             DragDropEffects output = DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
+            if (output == DragDropEffects.Move)
+            {
+                Application.Current.Shutdown();
+                Folder.CreateCache();
+            }
         }
         void OnLostFocus(object sender, EventArgs e)
         {

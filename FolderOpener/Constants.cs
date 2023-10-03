@@ -33,7 +33,8 @@ namespace FolderOpener
     {
         public static string Cwd = Directory.GetCurrentDirectory(); // current working directory
         public static string ParentDir= Directory.GetParent(Assembly.GetEntryAssembly().Location).FullName;
-        public static string CachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FastFolder\\cache";
+        public static string CacheFileName = "FastFolderCache";
+        public static string CachePath = Cwd + "\\" + CacheFileName;
 
         private static SDIcon _folderIcon = null;
         public static SDIcon FolderIcon
