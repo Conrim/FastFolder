@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -53,6 +55,7 @@ namespace FolderOpener
             InitializeComponent();
             SetStyle();
             LoadAppTiles();
+            KeyDown += OnKeyEvent;
         }
         private void LoadAppTiles()
         {
@@ -198,6 +201,77 @@ namespace FolderOpener
                 }
             }
             e.Handled = true;
+        }
+
+        void OnKeyEvent(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape) { Application.Current.Shutdown(); return; }
+
+            if (e.Key == Key.Enter)
+            {
+                foreach (AppTile appTile in appTiles)
+                {
+                    if (appTile.Selected)
+                    {
+                        appTile.OpenFile();
+                    }
+                }
+                return;
+            }
+
+            string letter = e.Key.ToString().ToLower();
+            
+            if (Regex.IsMatch(letter, @"^d\d+$"))
+            {
+                letter = letter.Remove(0, 1);
+            }
+            else if (letter.Length != 1)
+            {
+                return;
+            }
+
+            int firstHit = -1;
+            bool selectNext = false;
+            int selectIndex = -1;
+
+            for (int i = 0; i < appTiles.Length; i++)
+            {
+                if (!appTiles[i].FileName.ToLower().StartsWith(letter))
+                {
+                    continue;
+                }
+                if (firstHit == -1)
+                {
+                    firstHit = i;
+                }
+                if (selectNext)
+                {
+                    selectIndex = i;
+                    break;
+                }
+                else if (appTiles[i].Selected)
+                {
+                    selectNext = true;
+                }
+            }
+            if (firstHit == -1)
+            {
+                return;
+            }
+            if (selectIndex == -1)
+            {
+                selectIndex = firstHit;
+            }
+            for (int i = 0; i < appTiles.Length; i++)
+            {
+                if (i == selectIndex)
+                {
+                    appTiles[selectIndex].Selected = true;
+                    appTiles[selectIndex].BringIntoView();
+                    continue;
+                }
+                appTiles[i].Selected = false;
+            }
         }
     }
 }

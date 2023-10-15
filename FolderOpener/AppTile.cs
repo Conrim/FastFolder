@@ -30,6 +30,7 @@ namespace FolderOpener
     {
         private int FileIndex;
         public string FilePath;
+        public string FileName;
         private bool _selected = false;
         public bool Selected
         {
@@ -44,6 +45,7 @@ namespace FolderOpener
         {
             FileIndex = _fileIndex;
             FilePath = Folder.Items[FileIndex];
+            FileName = Path.GetFileNameWithoutExtension(FilePath);
 
             StackPanel panel = new StackPanel
             {
@@ -60,7 +62,7 @@ namespace FolderOpener
             
             Label label = new Label
             {
-                Content = Path.GetFileNameWithoutExtension(FilePath),
+                Content = FileName,
                 VerticalAlignment = VerticalAlignment.Center,
                 Foreground = Constants.FontColor
             };
@@ -92,7 +94,7 @@ namespace FolderOpener
 
             ToolTip = Path.GetFileName(FilePath);
         }
-        private void OpenFile()
+        public void OpenFile()
         {
             Process fileopener = new Process();
             fileopener.StartInfo.FileName = "explorer";
