@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FolderOpener", "FolderOpene
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F270703B-056C-4A64-9468-54B5F78FFDBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FolderCreater", "FolderCreater\FolderCreater.csproj", "{F117265A-FFA6-4375-92F3-197CA0011719}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{A34D6B1B-A884-41F5-8D17-2D8BA060A723}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A34D6B1B-A884-41F5-8D17-2D8BA060A723}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A34D6B1B-A884-41F5-8D17-2D8BA060A723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F117265A-FFA6-4375-92F3-197CA0011719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F117265A-FFA6-4375-92F3-197CA0011719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F117265A-FFA6-4375-92F3-197CA0011719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F117265A-FFA6-4375-92F3-197CA0011719}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
