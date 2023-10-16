@@ -37,7 +37,7 @@ namespace FolderCreater
             int i = 1;
             while (Directory.Exists(path) || File.Exists(path))
             {
-                path = wantedPath + i.ToString() + extension;
+                path = wantedPath + "_" + i.ToString() + extension;
                 i++;
             }
             return path;
