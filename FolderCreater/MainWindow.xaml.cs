@@ -51,7 +51,7 @@ namespace FolderCreater
             try
             {
                 string folderPath = CreateFolderAndShortcut();
-                MsgBox.Text = $"Ordner: '{Path.GetFileName(folderPath)}' erfolgreich erstellt";
+                MsgBox.Text = $"Folder: '{Path.GetFileName(folderPath)}' erfolgreich erstellt";
             }
             catch (Exception exception)
             {
@@ -62,8 +62,8 @@ namespace FolderCreater
         {
             // Error Checking
             Regex re = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]"); //Stackoverflow Code
-            if (re.IsMatch(NameTextBox.Text)) throw new Exception($"Der Dateiname: '{NameTextBox.Text}' enthält illegale Zeichen");
-            if (!Directory.Exists(CwdTextBox.Text)) throw new Exception($"Der angegeben Pfad: '{CwdTextBox.Text}' existiert nicht");
+            if (re.IsMatch(NameTextBox.Text)) throw new Exception($"Folder name '{NameTextBox.Text}' includes illegal characters");
+            if (!Directory.Exists(CwdTextBox.Text)) throw new Exception($"The path '{CwdTextBox.Text}' does not exist");
 
             string lnkFile = GetFreePath(Path.Combine(CwdTextBox.Text, NameTextBox.Text), ".lnk");
             string folderPath = GetFreePath(Path.Combine(parentFolderPath, @"data\" + Path.GetFileNameWithoutExtension(lnkFile)));
@@ -79,7 +79,7 @@ namespace FolderCreater
             shortcut.TargetPath = folderOpenerPath;
             shortcut.Save();
 
-            return folderPath;
+            return Path.GetFileNameWithoutExtension(lnkFile);
         }
     }
 }

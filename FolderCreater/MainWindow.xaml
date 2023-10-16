@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FolderCreater"
         mc:Ignorable="d"
         WindowStyle="ToolWindow"
-        Title="Ordner Erstellen" Height="280" MinHeight="250" MinWidth="250" Width="800">
+        Title="FolderCreater" Height="280" MinHeight="250" MinWidth="250" Width="800">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -17,9 +17,9 @@
             <RowDefinition/>
             <RowDefinition MaxHeight="150" MinHeight="50"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="Name des Ordners:" Margin="10,0,10,2" VerticalContentAlignment="Bottom"/>
-        <TextBox Grid.Row="1" Name="NameTextBox" Text="Ordner" Margin="10,0,10,0"/>
-        <Label Grid.Row="2" Content="Current-Working-Directory:" Margin="10,0,10,2" VerticalContentAlignment="Bottom"/>
+        <Label Grid.Row="0" Content="Name:" Margin="10,0,10,2" VerticalContentAlignment="Bottom"/>
+        <TextBox Grid.Row="1" Name="NameTextBox" Text="Folder" Margin="10,0,10,0"/>
+        <Label Grid.Row="2" Content="Create folder in:" Margin="10,0,10,2" VerticalContentAlignment="Bottom"/>
         <TextBox Grid.Row="3" Text="Lorpe.." Name="CwdTextBox" Margin="10,0,10,0"/>
         <ScrollViewer Grid.Row="4" Margin="10,10,10,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <TextBlock TextWrapping="Wrap" Text="Message-Console" Name="MsgBox" FontStyle="Italic" Foreground="Gray"/>
@@ -30,8 +30,8 @@
 
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="Abbr." Grid.Column="0" Margin="10,10,5,10" Click="Cancel"/>
-            <Button Content="Erstellen" Grid.Column="1" Margin="5,10,10,10" Click="OnCreateFolderAndShortcut"/>
+            <Button Content="Cancel" Grid.Column="0" Margin="10,10,5,10" Click="Cancel"/>
+            <Button Content="Create" Grid.Column="1" Margin="5,10,10,10" Click="OnCreateFolderAndShortcut"/>
         </Grid>
     </Grid>
 
