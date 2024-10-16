@@ -63,9 +63,22 @@ namespace FolderOpener
             }
         }
         private static List<string> _items = null;
-        
+
         public static void CreateCache()
         {
+            /* overview of cache struture
+                uint item count
+                unit[] pointers to paths
+                unit[] pointers to icons 
+                
+                data for paths
+
+                data for icons
+            */
+            /* overview of icon or name struture
+                unit length of data
+                data
+            */
             _items = Directory.GetFiles(Constants.Cwd).Concat(Directory.GetDirectories(Constants.Cwd)).ToList();
             _items.Remove(Constants.CachePath);
             uint itemCount = (uint)_items.Count;
@@ -78,6 +91,7 @@ namespace FolderOpener
 
             data.AddRange(new byte[sizeOfPtrs * 2]);
 
+            // add file names and corresponding pointers
             for (uint i = 0; i < _items.Count; i++)
             {
                 byte[] stringBytes = TEncoding.UTF8.GetBytes(_items[(int)i]);
@@ -85,6 +99,7 @@ namespace FolderOpener
                 addPtrAndObjData(data, stringBytes, ptrPos);
             }
 
+            // add icons and correspondig pointers, check for duplicates
             Dictionary<int, uint> iconPtrs = new Dictionary<int, uint>();
             for (uint i = 0; i < _items.Count; i++)
             {
@@ -116,7 +131,7 @@ namespace FolderOpener
             uint itemCount = readFromFile(0, sizeof(uint), BitConverter.ToUInt32);
             _pathPtrs = readListFromFile(sizeof(uint), itemCount, sizeof(uint), BitConverter.ToUInt32);
             _iconPtrs = readListFromFile(sizeof(uint) * (1 + itemCount), itemCount, sizeof(uint), BitConverter.ToUInt32);
-            //uint[] iconPtrs = readListFromFile(sizeof(uint), itemCount, sizeof(uint) + itemCount * sizeof(uint), BitConverter.ToUInt32);
+
             _items = new List<string>();
             for (uint i = 0; i < itemCount; i++)
             {
@@ -125,6 +140,7 @@ namespace FolderOpener
         }
         public static ImageSource GetIcon(int itemIndex)
         {
+            // gets icon from cache
             byte[] imgData = readObjFromFile(_iconPtrs[itemIndex]);
             using (MemoryStream ms = new MemoryStream(imgData))
             {
@@ -137,6 +153,7 @@ namespace FolderOpener
         }
         private static byte[] extractIcon(uint itemIndex)
         {
+            // gets icon from its file
             string PathItem = Items[(int)itemIndex];
             SDIcon icon;
             if (File.Exists(PathItem))

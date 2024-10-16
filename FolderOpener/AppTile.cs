@@ -35,7 +35,6 @@ namespace FolderOpener
 
             Image icon = new Image
             {
-                //Source = Constants.EmptyImgScr,
                 Source = Folder.GetIcon(FileIndex),
                 Height = 32,
                 Width = 32,

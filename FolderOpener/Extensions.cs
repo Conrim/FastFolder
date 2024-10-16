@@ -25,7 +25,7 @@ namespace FolderOpener
         {
             unchecked
             {
-                // chatgpt codee
+                // chatgpt code
                 int hash = 17;
                 foreach (byte b in arr)
                 {

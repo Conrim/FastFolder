@@ -1,22 +1,22 @@
 ﻿using System;
-using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Interop;
+using System.Reflection;
 using System.IO;
 using Path = System.IO.Path;
-using System.Windows.Interop;
 using SDIcon = System.Drawing.Icon;
-
 using Bitmap = System.Drawing.Bitmap;
-using System.Reflection;
 using Graphics = System.Drawing.Graphics;
 using SDColor = System.Drawing.Color;
+
 namespace FolderOpener
 {
     static class Constants
     {
         public static string Cwd = Directory.GetCurrentDirectory(); // current working directory
-        public static string ParentDir= Directory.GetParent(Assembly.GetEntryAssembly().Location).FullName;
+        public static string ParentDir = Directory.GetParent(Assembly.GetEntryAssembly().Location).FullName;
         public static string CacheFileName = "FastFolderCache";
         public static string CachePath = Cwd + "\\" + CacheFileName;
 
@@ -32,6 +32,8 @@ namespace FolderOpener
                 return _folderIcon;
             }
         }
+        
+        // TODO: not needed
         public static ImageSource _emptyImgScr;
         public static ImageSource EmptyImgScr
         {
@@ -51,7 +53,7 @@ namespace FolderOpener
             }
         }
 
-        public const int MinMoveDistSqrt = 200;
+        public const int MinMoveDistSqrt = 200; // min move distance squared for drag and drop
 
         // style related
         public static Brush BGColor = new SolidColorBrush(new Color

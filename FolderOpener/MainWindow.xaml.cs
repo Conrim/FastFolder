@@ -12,15 +12,15 @@ namespace FolderOpener
 {
     public partial class MainWindow : Window
     {
-        private Vector MouseClickPos;
-        private AppTile[] appTiles;
-        private int lastSelectedTile = -1;
+        Vector MouseClickPos;
+        AppTile[] appTiles;
+        int lastSelectedTile = -1;
+
         public MainWindow()
         {
             if (Environment.GetCommandLineArgs().Length > 1)
             {
-
-
+                // handels files moved in folder (initilized by Drag and Drop)
                 string[] SysArgv = Environment.GetCommandLineArgs();
                 for (int i=1; i < SysArgv.Length; i++)
                 {
@@ -41,7 +41,7 @@ namespace FolderOpener
                         {
                             throw new Exception($"Die Datei:'{SysArgv[i]}' existiert nicht");
                         }
-                        Folder.CreateCache();
+                        Folder.CreateCache(); //TODO: why here?
                     }
                     catch (Exception e)
                     {
@@ -56,7 +56,16 @@ namespace FolderOpener
             LoadAppTiles();
             KeyDown += OnKeyEvent;
         }
-        private void LoadAppTiles()
+        
+        // initialization
+        void SetStyle()
+        {
+            WindowBorder.BorderBrush = WindowBorder.Background = Constants.BGColor;
+            WindowBorder.BorderThickness = new Thickness(Constants.BorderThickness);
+            Width = Constants.WindowWidth;
+            Height = Constants.WindowHeight;
+        }
+        void LoadAppTiles()
         {
             appTiles = new AppTile[Folder.Items.Count];
             CreateGridCells(appTiles.Length);
@@ -69,7 +78,7 @@ namespace FolderOpener
                 {
                     fileIndex = row + column * Constants.NumRows;
                     if (fileIndex == appTiles.Length) return;
-                    appTiles[fileIndex] = AddTile(fileIndex, row, column);
+                    appTiles[fileIndex] = CreateTile(fileIndex, row, column);
                 }
                 column++;
             }
@@ -85,7 +94,7 @@ namespace FolderOpener
                 appGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(Constants.AppButtonWidth)});
             }
         }
-        AppTile AddTile(int fileIndex, int row, int column)
+        AppTile CreateTile(int fileIndex, int row, int column)
         {
             AppTile tile = new AppTile(fileIndex, () => OnButtonSelected(fileIndex));
             Grid.SetRow(tile, row);
@@ -93,56 +102,8 @@ namespace FolderOpener
             appGrid.Children.Add(tile);
             return tile;
         }
-        void SetStyle()
-        {
-            WindowBorder.BorderBrush = WindowBorder.Background = Constants.BGColor;
-            WindowBorder.BorderThickness = new Thickness(Constants.BorderThickness);
-            Width = Constants.WindowWidth;
-            Height = Constants.WindowHeight;
 
-        }
-        void OnButtonSelected(int tileIndex)
-        {
-            if (Keyboard.Modifiers == ModifierKeys.Control)
-            {
-                Debug.WriteLine("Select shit");
-                appTiles[tileIndex].Selected = !appTiles[tileIndex].Selected;
-                lastSelectedTile = tileIndex;
-                return;
-            }
-
-            foreach (AppTile tile in appTiles)
-            {
-                tile.Selected = false;
-            }
-
-            if (Keyboard.Modifiers == ModifierKeys.Shift && lastSelectedTile != -1)
-            {
-                int min = Math.Min(lastSelectedTile, tileIndex);
-                int max = Math.Max(lastSelectedTile, tileIndex);
-                for (int i = min; i <= max; i++)
-                {
-                    appTiles[i].Selected = true;
-                }
-                return;
-            }
-
-            appTiles[tileIndex].Selected = true;
-            lastSelectedTile = tileIndex;
-        }
-
-        StringCollection GetSelectedFiles()
-        {
-            StringCollection selectedFiles = new StringCollection();
-            foreach (AppTile tile in appTiles)
-            {
-                if (tile.Selected)
-                {
-                    selectedFiles.Add(tile.FilePath);
-                }
-            }
-            return selectedFiles;
-        }
+        // input events
         void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             MouseClickPos = (Vector)e.GetPosition(this);
@@ -163,48 +124,24 @@ namespace FolderOpener
                 Folder.CreateCache();
             }
         }
-        void OnLostFocus(object sender, EventArgs e)
+        StringCollection GetSelectedFiles()
         {
-            Application.Current.Shutdown();
-        }
-        void OpenInExplorer(object sender, RoutedEventArgs e)
-        {
-            Process fileopener = new Process();
-            fileopener.StartInfo.FileName = "explorer";
-            fileopener.StartInfo.Arguments = Constants.Cwd;
-            fileopener.Start();
-        }
-        void ReloadAndRestart(object sender, RoutedEventArgs e)
-        {
-            Folder.CreateCache();
-            Folder.LoadFromCache();
-
-            ((App)Application.Current).Restart();
-        }
-        void OnScroll(object sender, MouseWheelEventArgs e)
-        {
-            ScrollViewer scrollviewer = sender as ScrollViewer;
-            int speed = 5;
-            if (e.Delta > 0)
+            StringCollection selectedFiles = new StringCollection();
+            foreach (AppTile tile in appTiles)
             {
-                for (int i = 0; i < speed; i++)
+                if (tile.Selected)
                 {
-                    scrollviewer.LineLeft();
+                    selectedFiles.Add(tile.FilePath);
                 }
             }
-            else
-            {
-                for (int i = 0; i < speed; i++)
-                {
-                    scrollviewer.LineRight();
-                }
-            }
-            e.Handled = true;
+            return selectedFiles;
         }
-
         void OnKeyEvent(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Escape) { Application.Current.Shutdown(); return; }
+            if (e.Key == Key.Escape) {
+                Application.Current.Shutdown();
+                return;
+            }
 
             if (e.Key == Key.Enter)
             {
@@ -218,14 +155,16 @@ namespace FolderOpener
                 return;
             }
 
+            // default case: search for files which starts with the letter
             string letter = e.Key.ToString().ToLower();
-            
-            if (Regex.IsMatch(letter, @"^d\d+$"))
+            if (Regex.IsMatch(letter, @"^d\d+$")) //TODO: numpad support
             {
+                // digit keys (i. e. "7" on keyboard gives "d7")
                 letter = letter.Remove(0, 1);
             }
             else if (letter.Length != 1)
             {
+                // sort out keys like "tab"
                 return;
             }
 
@@ -271,6 +210,74 @@ namespace FolderOpener
                 }
                 appTiles[i].Selected = false;
             }
+        }
+        void OnButtonSelected(int tileIndex)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                appTiles[tileIndex].Selected = !appTiles[tileIndex].Selected;
+                lastSelectedTile = tileIndex;
+                return;
+            }
+
+            foreach (AppTile tile in appTiles)
+            {
+                tile.Selected = false;
+            }
+
+            if (Keyboard.Modifiers == ModifierKeys.Shift && lastSelectedTile != -1)
+            {
+                int min = Math.Min(lastSelectedTile, tileIndex);
+                int max = Math.Max(lastSelectedTile, tileIndex);
+                for (int i = min; i <= max; i++)
+                {
+                    appTiles[i].Selected = true;
+                }
+                return;
+            }
+
+            appTiles[tileIndex].Selected = true;
+            lastSelectedTile = tileIndex;
+        }
+        void OnScroll(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scrollviewer = sender as ScrollViewer;
+            int speed = 5;
+            if (e.Delta > 0)
+            {
+                for (int i = 0; i < speed; i++)
+                {
+                    scrollviewer.LineLeft();
+                }
+            }
+            else
+            {
+                for (int i = 0; i < speed; i++)
+                {
+                    scrollviewer.LineRight();
+                }
+            }
+            e.Handled = true;
+        }
+        void OnLostFocus(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        // context menu methods
+        void OpenInExplorer(object sender, RoutedEventArgs e)
+        {
+            Process fileopener = new Process();
+            fileopener.StartInfo.FileName = "explorer";
+            fileopener.StartInfo.Arguments = Constants.Cwd;
+            fileopener.Start();
+        }
+        void ReloadAndRestart(object sender, RoutedEventArgs e)
+        {
+            Folder.CreateCache();
+            Folder.LoadFromCache();
+
+            ((App)Application.Current).Restart();
         }
     }
 }
