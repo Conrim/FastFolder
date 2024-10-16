@@ -12,10 +12,10 @@ namespace FolderCreater
     public partial class MainWindow : Window
     {
         private string parentFolderPath = Directory.GetParent(Assembly.GetEntryAssembly().Location).FullName;
-        private string folderOpenerPath; // = Path.Combine(parentFolderPath, "OpenFolder.exe")
+        private string folderOpenerPath;
         public MainWindow()
         {
-            folderOpenerPath = @"K:\FastFolder\FolderOpener\bin\Release\FolderOpener.exe"; //Path.Combine(parentFolderPath, "OpenFolder.exe");
+            folderOpenerPath = Path.Combine(parentFolderPath, "OpenFolder.exe");
             InitializeComponent();
             CwdTextBox.Text = Directory.GetCurrentDirectory();
         }
