@@ -32,26 +32,6 @@ namespace FolderOpener
                 return _folderIcon;
             }
         }
-        
-        // TODO: not needed
-        public static ImageSource _emptyImgScr;
-        public static ImageSource EmptyImgScr
-        {
-            get
-            {
-                if (_emptyImgScr == null)
-                {
-                    Bitmap transparentBitmap = new Bitmap(32, 32);
-                    using (Graphics g = Graphics.FromImage(transparentBitmap))
-                    {
-                        g.Clear(SDColor.Transparent);
-                    }
-                    _emptyImgScr = Imaging.CreateBitmapSourceFromHIcon(transparentBitmap.GetHicon(), new Int32Rect(0, 0, 0, 0),
-                    BitmapSizeOptions.FromWidthAndHeight(32, 32));
-                }
-                return _emptyImgScr;
-            }
-        }
 
         public const int MinMoveDistSqrt = 200; // min move distance squared for drag and drop
 
