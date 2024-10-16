@@ -57,7 +57,7 @@ namespace FolderCreater
             if (lnkFile != Path.Combine(CwdTextBox.Text, NameTextBox.Text) + ".lnk")
             {
                 // folder with name allready exists
-                if (MessageBox.Show($"'{CwdTextBox.Text}' allready exists.\n\nChange name to '{Path.GetFileNameWithoutExtension(lnkFile)}'?", "Rename or Cancel", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.Cancel)
+                if (MessageBox.Show($"'{NameTextBox.Text}' allready exists.\n\nChange name to '{Path.GetFileNameWithoutExtension(lnkFile)}'?", "Rename or Cancel", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.Cancel)
                 {
                     return false;
                 }
