@@ -15,7 +15,7 @@ namespace FolderCreater
         private string folderOpenerPath;
         public MainWindow()
         {
-            folderOpenerPath = Path.Combine(parentFolderPath, "OpenFolder.exe");
+            folderOpenerPath = Path.Combine(parentFolderPath, "FolderOpener.exe");
             InitializeComponent();
             CwdTextBox.Text = Directory.GetCurrentDirectory();
         }
