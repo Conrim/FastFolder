@@ -157,10 +157,11 @@ namespace FolderOpener
 
             // default case: search for files which starts with the letter
             string letter = e.Key.ToString().ToLower();
-            if (Regex.IsMatch(letter, @"^d\d+$")) //TODO: numpad support
+            Console.WriteLine(letter);
+            var match = Regex.Match(letter, @"^(d|numpad)(\d+)$");
+            if (match.Success)
             {
-                // digit keys (i. e. "7" on keyboard gives "d7")
-                letter = letter.Remove(0, 1);
+                letter = match.Groups[2].Value; // gets number
             }
             else if (letter.Length != 1)
             {
