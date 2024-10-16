@@ -21,6 +21,8 @@ namespace FolderOpener
             if (Environment.GetCommandLineArgs().Length > 1)
             {
                 // handels files moved in folder (initilized by Drag and Drop)
+
+                bool change = false; // tracks wheater new files/folder are added
                 string[] SysArgv = Environment.GetCommandLineArgs();
                 for (int i=1; i < SysArgv.Length; i++)
                 {
@@ -32,21 +34,28 @@ namespace FolderOpener
                         if (File.Exists(SysArgv[i]))
                         {
                             File.Move(SysArgv[i], newFileLocation);
+                            change = true;
                         }
                         else if (Directory.Exists(SysArgv[i]))
                         {
                             Directory.Move(SysArgv[i], newFileLocation);
+                            change = true;
                         }
                         else
                         {
                             throw new Exception($"Die Datei:'{SysArgv[i]}' existiert nicht");
                         }
-                        Folder.CreateCache(); //TODO: why here?
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine($"Fehler {e.Message}");
                     }
+                }
+
+                // update cache if something has changed
+                if (change)
+                {
+                    Folder.CreateCache();
                 }
                 Application.Current.Shutdown();
             }
