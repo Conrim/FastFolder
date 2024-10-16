@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FolderCreater"
         mc:Ignorable="d"
         WindowStyle="ToolWindow"
-        Title="FolderCreater" Height="280" MinHeight="250" MinWidth="250" Width="800">
+        Title="Create FastFolder" Height="220" MinHeight="205" MaxHeight="300" MinWidth="250" Width="800">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -15,22 +15,18 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="23"/>
             <RowDefinition/>
-            <RowDefinition MaxHeight="150" MinHeight="50"/>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Content="Name:" Margin="10,0,10,2" VerticalContentAlignment="Bottom"/>
         <TextBox Grid.Row="1" Name="NameTextBox" Text="Folder" Margin="10,0,10,0"/>
         <Label Grid.Row="2" Content="Create folder in:" Margin="10,0,10,2" VerticalContentAlignment="Bottom"/>
-        <TextBox Grid.Row="3" Text="Lorpe.." Name="CwdTextBox" Margin="10,0,10,0"/>
-        <ScrollViewer Grid.Row="4" Margin="10,10,10,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <TextBlock TextWrapping="Wrap" Text="Message-Console" Name="MsgBox" FontStyle="Italic" Foreground="Gray"/>
-        </ScrollViewer>
+        <TextBox Grid.Row="3" Text="C:\example\path" Name="CwdTextBox" Margin="10,0,10,0"/>
+
         <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
 
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="Cancel" Grid.Column="0" Margin="10,10,5,10" Click="Cancel"/>
             <Button Content="Create" Grid.Column="1" Margin="5,10,10,10" Click="OnCreateFolderAndShortcut"/>
         </Grid>
     </Grid>

@@ -31,23 +31,22 @@ namespace FolderCreater
             }
             return path;
         }
-        void Cancel(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
         void OnCreateFolderAndShortcut(object sender, RoutedEventArgs e)
         {
             try
             {
-                string folderPath = CreateFolderAndShortcut();
-                MsgBox.Text = $"Folder: '{Path.GetFileName(folderPath)}' erfolgreich erstellt";
+                bool successful = CreateFolderAndShortcut();
+                if (successful)
+                {
+                    Application.Current.Shutdown();
+                }
             }
             catch (Exception exception)
             {
-                MsgBox.Text = exception.Message;
+                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-        string CreateFolderAndShortcut()
+        bool CreateFolderAndShortcut() // false -> no Folder was created. true -> Folder was created
         {
             // Error Checking
             Regex re = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]"); //Stackoverflow Code
@@ -55,8 +54,15 @@ namespace FolderCreater
             if (!Directory.Exists(CwdTextBox.Text)) throw new Exception($"The path '{CwdTextBox.Text}' does not exist");
 
             string lnkFile = GetFreePath(Path.Combine(CwdTextBox.Text, NameTextBox.Text), ".lnk");
+            if (lnkFile != Path.Combine(CwdTextBox.Text, NameTextBox.Text) + ".lnk")
+            {
+                // folder with name allready exists
+                if (MessageBox.Show($"'{CwdTextBox.Text}' allready exists.\n\nChange name to '{Path.GetFileNameWithoutExtension(lnkFile)}'?", "Rename or Cancel", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.Cancel)
+                {
+                    return false;
+                }
+            }
             string folderPath = GetFreePath(Path.Combine(parentFolderPath, @"data\" + Path.GetFileNameWithoutExtension(lnkFile)));
-
 
             // creates Folder
             Directory.CreateDirectory(folderPath);
@@ -68,7 +74,7 @@ namespace FolderCreater
             shortcut.TargetPath = folderOpenerPath;
             shortcut.Save();
 
-            return Path.GetFileNameWithoutExtension(lnkFile);
+            return true;
         }
     }
 }
