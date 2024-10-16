@@ -6,6 +6,7 @@ using IWshRuntimeLibrary;
 
 using System.Reflection;
 using System.Text.RegularExpressions;
+using ModernWpf;
 
 namespace FolderCreater
 {
@@ -43,7 +44,7 @@ namespace FolderCreater
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ModernWpf.MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
         bool CreateFolderAndShortcut() // false -> no Folder was created. true -> Folder was created
@@ -57,7 +58,7 @@ namespace FolderCreater
             if (lnkFile != Path.Combine(CwdTextBox.Text, NameTextBox.Text) + ".lnk")
             {
                 // folder with name allready exists
-                if (MessageBox.Show($"'{NameTextBox.Text}' allready exists.\n\nChange name to '{Path.GetFileNameWithoutExtension(lnkFile)}'?", "Rename or Cancel", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.Cancel)
+                if (ModernWpf.MessageBox.Show($"'{NameTextBox.Text}' allready exists.\n\nChange name to '{Path.GetFileNameWithoutExtension(lnkFile)}'?", "Rename or Cancel", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.Cancel)
                 {
                     return false;
                 }
