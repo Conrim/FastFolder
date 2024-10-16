@@ -18,8 +18,11 @@ try:
         shutil.copyfile(path.join(dir_path, r"FolderCreater\bin\Release\FolderCreater.exe"), path.join(build_path, "FolderCreater.exe"))
         shutil.copyfile(path.join(dir_path, r"FolderCreater\bin\Release\ModernWpf.dll"), path.join(build_path, "ModernWpf.dll"))
         shutil.copyfile(path.join(dir_path, r"FolderCreater\bin\Release\ModernWpf.MessageBox.dll"), path.join(build_path, "ModernWpf.MessageBox.dll"))
+        print("build succesful (-:")
     except Exception as e:
         print(e)
+        print()
         raise Exception("Did you compile 'FolderCreater' and 'FolderOpener.exe' (for release)?")
 except Exception as e:
     print(e)
+input("\nPress Enter to exit")
