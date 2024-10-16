@@ -6,29 +6,139 @@
         xmlns:local="clr-namespace:FolderCreater"
         mc:Ignorable="d"
         WindowStyle="ToolWindow"
-        Title="Create FastFolder" Height="220" MinHeight="205" MaxHeight="300" MinWidth="250" Width="800">
+        Background="#F0F0F0"
+        Title="Create FastFolder"
+        Height="215"
+        MinHeight="215"
+        MaxHeight="215"
+        MinWidth="250"
+        Width="800">
 
+    <!-- Define reusable resources for colors and styles -->
+    <Window.Resources>
+        <!-- Colors -->
+        <Color x:Key="IdleBorderColor">#000000</Color>
+        <Color x:Key="HoverBorderColor">#333333</Color>
+        <Color x:Key="FocusBorderColor">#3498DB</Color>
+        <Color x:Key="ButtonBackgroundColor">#3498DB</Color>
+        <Color x:Key="ButtonHoverBackgroundColor">#b6d5e9</Color>
+
+        <!-- Solid Color Brushes -->
+        <SolidColorBrush x:Key="IdleBorderBrush" Color="{StaticResource IdleBorderColor}" />
+        <SolidColorBrush x:Key="HoverBorderBrush" Color="{StaticResource HoverBorderColor}" />
+        <SolidColorBrush x:Key="FocusBorderBrush" Color="{StaticResource FocusBorderColor}" />
+        <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource ButtonBackgroundColor}" />
+        <SolidColorBrush x:Key="ButtonHoverBackgroundBrush" Color="{StaticResource ButtonHoverBackgroundColor}" />
+
+        <!-- TextBox Style with Rounded Corners for NameTextBox -->
+        <Style x:Key="NameTextBoxBorderStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="{StaticResource IdleBorderBrush}"/>
+            <Style.Triggers>
+                <!-- Hover State -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}"/>
+                    <Setter Property="Background" Value="{StaticResource ButtonHoverBackgroundBrush}"/>
+                </Trigger>
+                <!-- Focus State for NameTextBox -->
+                <DataTrigger Binding="{Binding IsFocused, ElementName=NameTextBox}" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource FocusBorderBrush}"/>
+                    <Setter Property="Background" Value="#FFFFFF"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- TextBox Style with Rounded Corners for CwdTextBox -->
+        <Style x:Key="CwdTextBoxBorderStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="{StaticResource IdleBorderBrush}"/>
+            <Style.Triggers>
+                <!-- Hover State -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}"/>
+                    <Setter Property="Background" Value="{StaticResource ButtonHoverBackgroundBrush}"/>
+                </Trigger>
+                <!-- Focus State for CwdTextBox -->
+                <DataTrigger Binding="{Binding IsFocused, ElementName=CwdTextBox}" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource FocusBorderBrush}"/>
+                    <Setter Property="Background" Value="#FFFFFF"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Button Style with Hover Effect -->
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource ButtonBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="13"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ButtonHoverBackgroundBrush}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}"/>
+                    <Setter Property="Foreground" Value="{StaticResource HoverBorderBrush}"/>
+                    <Setter Property="BorderThickness" Value="3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <!-- Layout -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="23"/>
+            <RowDefinition Height="28"/>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="23"/>
+            <RowDefinition Height="28"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="Name:" Margin="10,0,10,2" VerticalContentAlignment="Bottom"/>
-        <TextBox Grid.Row="1" Name="NameTextBox" Text="Folder" Margin="10,0,10,0"/>
-        <Label Grid.Row="2" Content="Create folder in:" Margin="10,0,10,2" VerticalContentAlignment="Bottom"/>
-        <TextBox Grid.Row="3" Text="C:\example\path" Name="CwdTextBox" Margin="10,0,10,0"/>
 
-        <Grid Grid.Row="5">
+        <!-- Name Label and TextBox -->
+        <Label Grid.Row="0" Content="Name:" Margin="10,0,10,2" VerticalContentAlignment="Bottom" FontWeight="Bold"/>
+        <Border Grid.Row="1" Style="{StaticResource NameTextBoxBorderStyle}" Margin="10,0,10,0">
+            <TextBox Name="NameTextBox" 
+                     VerticalAlignment="Center" 
+                     Text="Folder" 
+                     FontWeight="Bold" 
+                     Background="Transparent" 
+                     BorderThickness="0" 
+                     Padding="4,0,4,0"/>
+        </Border>
+
+        <!-- Path Label and TextBox -->
+        <Label Grid.Row="2" Content="Create folder in:" Margin="10,0,10,2" VerticalContentAlignment="Bottom" FontWeight="Bold"/>
+        <Border Grid.Row="3" Style="{StaticResource CwdTextBoxBorderStyle}" Margin="10,0,10,0">
+            <TextBox Name="CwdTextBox"
+                     VerticalAlignment="Center" 
+                     Text="C:\example\path" 
+                     FontWeight="Bold" 
+                     Background="Transparent" 
+                     BorderThickness="0" 
+                     Padding="4,0,4,0"/>
+        </Border>
+
+        <!-- Button -->
+        <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-
-                <ColumnDefinition/>
+                <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Create" Grid.Column="1" Margin="5,10,10,10" Click="OnCreateFolderAndShortcut"/>
+            <Button Grid.Column="1" Content="Create" Style="{StaticResource RoundedButtonStyle}" Margin="5,10,10,10" FontWeight="Bold" Click="OnCreateFolderAndShortcut"/>
         </Grid>
     </Grid>
-
 </Window>
