@@ -4,13 +4,19 @@ try:
 
     dir_path = path.dirname(path.realpath(__file__))
     build_path = path.join(dir_path, "build")
+    data_path = path.join(os.getenv('APPDATA'), "FastFolder_Conrim")
 
     if path.isdir(build_path):
         shutil.rmtree(build_path)
     elif path.isfile(build_path):
         os.remove(build_path)
+    os.makedirs(build_path)
 
-    os.makedirs(path.join(build_path, "data"))
+    try:
+        shutil.rmtree(data_path)
+    except:
+        pass
+    os.makedirs(data_path)
 
     shutil.copyfile(path.join(dir_path, r"FolderOpener\folder.ico"), path.join(build_path, "folder.ico"))
     try:

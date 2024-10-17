@@ -63,7 +63,7 @@ namespace FolderCreater
                     return false;
                 }
             }
-            string folderPath = GetFreePath(Path.Combine(parentFolderPath, @"data\" + Path.GetFileNameWithoutExtension(lnkFile)));
+            string folderPath = GetFreePath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FastFolder_Conrim", Path.GetFileNameWithoutExtension(lnkFile)));
 
             // creates Folder
             Directory.CreateDirectory(folderPath);
