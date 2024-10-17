@@ -49,6 +49,7 @@ namespace FolderOpener
                     catch (Exception e)
                     {
                         Console.WriteLine($"Fehler {e.Message}");
+                        MessageBox.Show($"{e.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
 
