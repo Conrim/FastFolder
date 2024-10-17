@@ -38,7 +38,7 @@ namespace FolderOpener
                         }
                         else if (Directory.Exists(SysArgv[i]))
                         {
-                            Directory.Move(SysArgv[i], newFileLocation);
+                            Extensions.MoveDirectory(SysArgv[i], newFileLocation);
                             change = true;
                         }
                         else
