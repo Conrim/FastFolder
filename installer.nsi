@@ -26,7 +26,7 @@ ShowInstDetails show
 ShowUninstDetails show
 
 # Section for installing FastFolder
-Section "Install FastFolder"
+Section
     SetOutPath "$INSTDIR"
     
     # Create folder for data
@@ -58,14 +58,11 @@ Section "Install FastFolder"
 
     # Automatically create a Start Menu shortcut
     CreateShortCut "$SMPROGRAMS\FastFolder - FolderCreater.lnk" "$INSTDIR\FolderCreater.exe"
-
-    # Check if user selected to create a desktop shortcut
-    SectionIn 1
-    CreateShortCut "$DESKTOP\FastFolder - FolderCreater.lnk" "$INSTDIR\FolderCreater.exe"
 SectionEnd
 
-# Component page - Option for creating desktop shortcuts
-Section "Desktop Shortcut" SecShortcuts
+Section "Desktop Shortcut (Recommended)"
+    # Create a desktop shortcut
+    CreateShortCut "$DESKTOP\FastFolder - FolderCreater.lnk" "$INSTDIR\FolderCreater.exe"
 SectionEnd
 
 # Uninstaller Section
