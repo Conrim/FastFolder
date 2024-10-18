@@ -65,6 +65,11 @@ Section "Desktop Shortcut (Recommended)"
     CreateShortCut "$DESKTOP\FastFolder - FolderCreater.lnk" "$INSTDIR\FolderCreater.exe"
 SectionEnd
 
+Section "Start after installation"
+    # Run Application
+    Exec "$INSTDIR\FolderCreater.exe"
+SectionEnd
+
 # Uninstaller Section
 Section "Uninstall"
     # Display warning message box
